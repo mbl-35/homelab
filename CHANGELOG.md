@@ -12,6 +12,7 @@
 [ ] Manage dotfiles for staging levels (maybe multi cluster management)
 [ ] Manage metal cluster by configuration (k3s, kubesphere, ..)
 [X] Make clean : add remove k3d cluster
+[X] Change kubeconfig and .env file owner (not root)
 
 
 ## Initial diffs khuedoan/homelab branch prod vs dev

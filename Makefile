@@ -44,6 +44,8 @@ tools:
 		--tty \
 		--network host \
 		--env "NIX_USER=${USER}" \
+		--env "NIX_USER_ID=$(shell id -u)" \
+		--env "NIX_USER_GID=$(shell id -g)" \
 		--env "KUBECONFIG=${KUBECONFIG}" \
 		--volume "/var/run/docker.sock:/var/run/docker.sock" \
 		--volume $(shell pwd):$(shell pwd) \
@@ -76,9 +78,10 @@ git-hooks:
 guard-env: 
 	@[ "${env_target}" ] || ( echo ">> env_target is not set"; exit 1 )
 	@echo "Selected env: ${env_target}"
-	@[ "${env_target}" != "dev" ] || ( ./scripts/update-dev-inventory )
+	#@[ "${env_target}" != "dev" ] || ( ./scripts/update-dev-inventory )
 
 env:
 	@for cfg in $(COMMAND_ARGS); do \
 		echo env_$$cfg | tr \: \= > "${DOTENV_FILE}"; \
 	done
+	@chown ${NIX_USER_ID}:${NIX_USER_GID} ${DOTENV_FILE}

@@ -1,0 +1,5 @@
+#!/bin/sh
+
+sed -e 's/ansible_host: [^,]*/ansible_host: '$(ip addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')'/' \
+    -e 's/ansible_user: [^,]*/ansible_user: '$NIX_USER'/' \
+    -i metal/inventories/dev.yml

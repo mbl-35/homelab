@@ -1,6 +1,16 @@
 .POSIX:
 
-env ?= "prod"
+include $(shell pwd)/../.env
+
+ifeq (${env}, dev)
+
+default: cluster
+
+cluster:
+	k3d cluster start homelab-dev || k3d cluster create --config k3d-dev.yaml
+	k3d kubeconfig get homelab-dev > kubeconfig.yaml
+
+else
 
 default: boot cluster
 
@@ -16,6 +26,7 @@ cluster:
 	ansible-playbook \
 		--inventory inventories/${env}.yml \
 		cluster.yml
+endif
 
 console:
 	ansible-console \

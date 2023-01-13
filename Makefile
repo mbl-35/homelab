@@ -4,27 +4,38 @@
 
 KUBECONFIG = $(shell pwd)/metal/kubeconfig.yaml
 KUBE_CONFIG_PATH = $(KUBECONFIG)
+DOTENV_FILE = $(shell pwd)/.env
 
-default: metal bootstrap external smoke-test post-install clean
+ifeq (env,$(firstword $(MAKECMDGOALS)))
+    COMMAND_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+    COMMAND_ARGS := $(subst :,\:,$(COMMAND_ARGS))
+    $(eval $(COMMAND_ARGS):;@:)
+else ifneq (,$(wildcard $(DOTENV_FILE)))
+    include $(DOTENV_FILE)
+    export 
+endif
 
-configure:
+
+default: guard-env metal bootstrap external smoke-test post-install clean
+
+configure: guard-env
 	./scripts/configure
 	git status
 
-metal:
-	make -C metal
+metal: guard-env
+	make -C metal env=${env_target}
 
-bootstrap:
+bootstrap: guard-env
 	make -C bootstrap
 
-external:
-	make -C external
+external: guard-env
+	[ "${env_target}" = "dev" ] || make -C external
 
-smoke-test:
+smoke-test: guard-env
 	make -C test filter=Smoke
 
-post-install:
-	@./scripts/hacks
+post-install: guard-env
+	@[ "${env_target}" = "dev" ] || ./scripts/hacks
 
 tools:
 	@docker run \
@@ -32,6 +43,7 @@ tools:
 		--interactive \
 		--tty \
 		--network host \
+		--env "NIX_USER=${USER}" \
 		--env "KUBECONFIG=${KUBECONFIG}" \
 		--volume "/var/run/docker.sock:/var/run/docker.sock" \
 		--volume $(shell pwd):$(shell pwd) \
@@ -42,15 +54,11 @@ tools:
 		--workdir $(shell pwd) \
 		nixos/nix nix-shell
 
-test:
+test: guard-env
 	make -C test
 
-clean:
-	docker compose --project-directory ./metal/roles/pxe_server/files down
-
-dev:
-	make -C metal cluster env=dev
-	make -C bootstrap
+clean: guard-env
+	[ "${env_target}" = "dev" ] || docker compose --project-directory ./metal/roles/pxe_server/files down
 
 docs:
 	docker run \
@@ -63,3 +71,13 @@ docs:
 
 git-hooks:
 	pre-commit install
+
+guard-env: 
+	@[ "${env_target}" ] || ( echo ">> env_target is not set"; exit 1 )
+	@echo "Selected env: ${env_target}"
+	@[ "${env_target}" != "dev" ] || ( ./scripts/update-dev-inventory )
+
+env:
+	@for cfg in $(COMMAND_ARGS); do \
+		echo env_$$cfg | tr \: \= > "${DOTENV_FILE}"; \
+	done

@@ -1,5 +1,7 @@
 #!/bin/sh
 
+helm repo add argo https://argoproj.github.io/argo-helm
+
 helm template \
     --dependency-update \
     --include-crds \

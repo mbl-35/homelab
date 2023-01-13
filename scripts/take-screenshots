@@ -15,31 +15,31 @@ from selenium import webdriver
 apps = [
     {
         'name': 'home',
-        'url': 'https://home.khuedoan.com'
+        'url': 'https://home.kube.localhost'
     },
     {
         'name': 'gitea',
-        'url': 'https://git.khuedoan.com/ops/homelab'
+        'url': 'https://git.kube.localhost/ops/homelab'
     },
     {
         'name': 'argocd',
-        'url': 'https://argocd.khuedoan.com/applications/root'
+        'url': 'https://argocd.kube.localhost/applications/root'
     },
     {
         'name': 'vault',
-        'url': 'https://vault.khuedoan.com/ui/vault/secrets'
+        'url': 'https://vault.kube.localhost/ui/vault/secrets'
     },
     {
         'name': 'tekton',
-        'url': 'https://tekton.khuedoan.com/#/namespaces/tekton-pipelines/pipelineruns/homelab?pipelineTask=external&step=plan'
+        'url': 'https://tekton.kube.localhost/#/namespaces/tekton-pipelines/pipelineruns/homelab?pipelineTask=external&step=plan'
     },
     {
         'name': 'matrix',
-        'url': 'https://chat.khuedoan.com/#/room/#random:matrix.khuedoan.com'
+        'url': 'https://chat.kube.localhost/#/room/#random:matrix.kube.localhost'
     },
     {
         'name': 'grafana',
-        'url': 'https://grafana.khuedoan.com/d/efa86fd1d0c121a26444b636a3f509a8/kubernetes-compute-resources-cluster'  # wtf is this ID
+        'url': 'https://grafana.kube.localhost/d/efa86fd1d0c121a26444b636a3f509a8/kubernetes-compute-resources-cluster'  # wtf is this ID
     },
 ]
 

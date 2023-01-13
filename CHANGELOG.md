@@ -13,6 +13,8 @@
 [ ] Manage metal cluster by configuration (k3s, kubesphere, ..)
 [X] Make clean : add remove k3d cluster
 [X] Change kubeconfig and .env file owner (not root)
+[X] Add Helm Argo repo definition
+[X] Change ./metal/argo/Chart.lock owner
 
 
 ## Initial diffs khuedoan/homelab branch prod vs dev

@@ -19,6 +19,7 @@ endif
 default: guard-env metal bootstrap external smoke-test post-install clean
 
 configure: guard-env
+	git config --global --add safe.directory $(shell pwd)
 	./scripts/configure
 	git status
 

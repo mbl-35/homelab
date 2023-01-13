@@ -11,7 +11,7 @@
 [ ] Ability to set a external git repo (vs internal gitea) - variabilize
 [ ] Manage dotfiles for staging levels (maybe multi cluster management)
 [ ] Manage metal cluster by configuration (k3s, kubesphere, ..)
-[ ] Make clean : add remove k3d cluster
+[X] Make clean : add remove k3d cluster
 
 
 ## Initial diffs khuedoan/homelab branch prod vs dev

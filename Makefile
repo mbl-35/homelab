@@ -59,6 +59,7 @@ test: guard-env
 
 clean: guard-env
 	[ "${env_target}" = "dev" ] || docker compose --project-directory ./metal/roles/pxe_server/files down
+	make -C metal clean
 
 docs:
 	docker run \

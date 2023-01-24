@@ -39,6 +39,8 @@ post-install: guard-env
 	@[ "${env_target}" = "dev" ] || ./scripts/hacks
 
 tools:
+	@[ -f $(shell pwd)/.docker.json ] || \
+		echo "{}" >$(shell pwd)/.docker.json
 	@docker run \
 		--rm \
 		--interactive \
@@ -49,6 +51,7 @@ tools:
 		--env "NIX_USER_GID=$(shell id -g)" \
 		--env "KUBECONFIG=${KUBECONFIG}" \
 		--volume "/var/run/docker.sock:/var/run/docker.sock" \
+		--volume "$(shell pwd)/.docker.json:/root/.docker/config.json" \
 		--volume $(shell pwd):$(shell pwd) \
 		--volume ${HOME}/.ssh:/root/.ssh \
 		--volume ${HOME}/.terraform.d:/root/.terraform.d \

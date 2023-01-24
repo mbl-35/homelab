@@ -15,7 +15,13 @@
 [X] Change kubeconfig and .env file owner (not root)
 [X] Add Helm Argo repo definition
 [X] Change ./metal/argo/Chart.lock owner
-
+[ ] SkipDryRunOnMissingResource=true to chart template when dev target
+[ ] StorageClassName: longhorn => local-path (vault et trow) on dev mode
+[ ] Do not install longhorn on dev mode
+[ ] System upgrade : remove k3s on dev mode
+[ ] System upgrade : check channel/version for agent/server
+[X] Report fix(argocd): do not apply ServiceMonitor on bootstrap (https://github.com/mbl-35/homelab/commit/cd39632439e0d57a1a0fcbed5cc7d80845e2498f)
+[X] Allow docker configuration on nixos (.docker.json)
 
 ## Initial diffs khuedoan/homelab branch prod vs dev
 - kube.localhost => 127-0-0-1.nip.io
@@ -26,3 +32,8 @@
 - suppression system/longhorn-system
 - system-upgrade => commenter resources: k3s
 - system-upgrade/[agent|server] => version: v1.24.9+k3s1 vs channel: https://update.k3s.io/v1-release/channels/v1.23
+
+
+
+pour l'instant, dev ne fonctionne pas car le storageClassName n'est pas le bon pour vault ... 
+donc, gitea n'arrive pas à récupérer ses secrets

@@ -9,15 +9,15 @@
 [X] Make this directory as safe for git (git grep)
 [X] Update dev dynamic ip address to inventory (e.g. wsl)
 [ ] Ability to set a external git repo (vs internal gitea) - variabilize
-[ ] Manage staging levels files on helms (maybe multi cluster management)
+[X] Manage staging levels files on helms (maybe multi cluster management)
 [ ] Manage metal cluster by configuration (k3s, kubesphere, ..)
 [X] Make clean : add remove k3d cluster
 [X] Change kubeconfig and .env file owner (not root)
 [X] Add Helm Argo repo definition
 [X] Change ./metal/argo/Chart.lock owner
-[ ] SkipDryRunOnMissingResource=true to chart template when dev target
-[ ] StorageClassName: longhorn => local-path (vault et trow) on dev mode
-[ ] Do not install longhorn on dev mode
+[X] SkipDryRunOnMissingResource=true to chart template when dev target
+[X] StorageClassName: longhorn => local-path (vault et trow) on dev mode
+[X] Do not install longhorn on dev mode
 [ ] System upgrade : remove k3s on dev mode
 [ ] System upgrade : check channel/version for agent/server
 [X] Report fix(argocd): do not apply ServiceMonitor on bootstrap (https://github.com/mbl-35/homelab/commit/cd39632439e0d57a1a0fcbed5cc7d80845e2498f)

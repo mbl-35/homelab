@@ -1,0 +1,3 @@
+gitops:
+  stage: devel
+  domain: kube.localhost

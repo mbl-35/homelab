@@ -1,0 +1,6 @@
+gitea:
+  persistence:
+    storageClass: local-path
+  postgresql:
+    persistence:
+      storageClass: local-path

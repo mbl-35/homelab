@@ -1,0 +1,7 @@
+dendrite:
+  persistence:
+    storageClass: local-path
+  postgresql: 
+    persistence:
+      enabled: true
+      storageClass: local-path

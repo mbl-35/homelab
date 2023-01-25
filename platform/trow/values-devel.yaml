@@ -1,0 +1,3 @@
+trow:
+  volumeClaim:
+    storageClassName: local-path

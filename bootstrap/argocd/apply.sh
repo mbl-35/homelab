@@ -11,6 +11,7 @@ helm template \
     --include-crds \
     --namespace argocd \
     --values "${VALUES}" \
+    --set gitops.stage=${env_stage} \
     argocd . \
     | kubectl apply -n argocd -f -
 

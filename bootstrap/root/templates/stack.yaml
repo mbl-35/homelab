@@ -12,6 +12,11 @@ spec:
         revision: {{ $.Values.gitops.revision }}
         directories:
           - path: {{ $stack.name }}/*
+          #- path: '{{ cat `$stack.name` "/*" }}'
+{{- if eq $.Values.gitops.stage "devel" }}
+          - path: system/longhorn-system
+            exclude: true
+{{- end }}
   template:
     metadata:
       name: '{{ `{{path.basename}}` }}'
@@ -24,6 +29,15 @@ spec:
         repoURL: {{ $.Values.gitops.repo }}
         path: '{{ `{{path}}` }}'
         targetRevision: {{ $.Values.gitops.revision }}
+        helm:
+          parameters:
+            - name: gitops.domain
+              value: {{ $.Values.gitops.domain }}
+          ignoreMissingValueFiles: true
+          valueFiles:
+            - values.yaml
+            - values-{{ $.Values.gitops.stage }}.yaml
+            #- '{{ cat "values-" `$.Values.gitops.stage` ".yaml" }}'
       syncPolicy:
         automated:
           prune: true
@@ -38,4 +52,5 @@ spec:
           - CreateNamespace=true
           - ApplyOutOfSyncOnly=true
           - ServerSideApply=true
+          - SkipDryRunOnMissingResource=true
 {{- end }}

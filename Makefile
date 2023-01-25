@@ -24,19 +24,19 @@ configure: guard-env
 	git status
 
 metal: guard-env
-	make -C metal env=${env_target}
+	make -C metal env=${env_stage}
 
 bootstrap: guard-env
-	make -C bootstrap
+	make -C bootstrap env=${env_stage}
 
 external: guard-env
-	[ "${env_target}" = "dev" ] || make -C external
+	[ "${env_stage}" = "devel" ] || make -C external
 
 smoke-test: guard-env
 	make -C test filter=Smoke
 
 post-install: guard-env
-	@[ "${env_target}" = "dev" ] || ./scripts/hacks
+	@[ "${env_stage}" = "devel" ] || ./scripts/hacks
 
 tools:
 	@[ -f $(shell pwd)/.docker.json ] || \
@@ -64,7 +64,7 @@ test: guard-env
 	make -C test
 
 clean: guard-env
-	[ "${env_target}" = "dev" ] || docker compose --project-directory ./metal/roles/pxe_server/files down
+	[ "${env_stage}" = "devel" ] || docker compose --project-directory ./metal/roles/pxe_server/files down
 	make -C metal clean
 
 docs:
@@ -80,9 +80,9 @@ git-hooks:
 	pre-commit install
 
 guard-env: 
-	@[ "${env_target}" ] || ( echo ">> env_target is not set"; exit 1 )
-	@echo "Selected env: ${env_target}"
-	#@[ "${env_target}" != "dev" ] || ( ./scripts/update-dev-inventory )
+	@[ "${env_stage}" ] || ( echo ">> Stage is not set in .env file use command 'make env stage:<target>"; exit 1 )
+	@echo "Selected stage: ${env_stage}"
+	#@[ "${env_stage}" != "devel" ] || ( ./scripts/update-dev-inventory )
 
 env:
 	@for cfg in $(COMMAND_ARGS); do \

@@ -1,7 +1,7 @@
 .POSIX:
 
 
-ifeq (dev, ${env_target})
+ifeq (devel, ${env_stage})
 
 default: cluster
 
@@ -23,12 +23,12 @@ default: boot cluster
 
 boot: ~/.ssh/id_ed25519
 	ansible-playbook \
-		--inventory inventories/${env_target}.yml \
+		--inventory inventories/${env_stage}.yml \
 		boot.yml
 
 cluster:
 	ansible-playbook \
-		--inventory inventories/${env_target}.yml \
+		--inventory inventories/${env_stage}.yml \
 		cluster.yml
 
 clean:
@@ -37,4 +37,4 @@ endif
 
 console:
 	ansible-console \
-		--inventory inventories/${env_target}.yml
+		--inventory inventories/${env_stage}.yml

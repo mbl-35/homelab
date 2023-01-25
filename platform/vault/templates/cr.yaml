@@ -260,7 +260,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: vault-file
 spec:
-  storageClassName: {{ Values.vault.storage.storageClassName }}
+  storageClassName: {{ .Values.vault.storage.storageClassName }}
   accessModes:
     - ReadWriteOnce
   resources:

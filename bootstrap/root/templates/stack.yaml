@@ -16,6 +16,12 @@ spec:
 {{- if eq $.Values.gitops.stage "devel" }}
           - path: system/longhorn-system
             exclude: true
+          - path: system/external-dns
+            exclude: true
+          - path: system/cert-manager
+            exclude: true
+          - path: system/cloudflared
+            exclude: true
 {{- end }}
   template:
     metadata:

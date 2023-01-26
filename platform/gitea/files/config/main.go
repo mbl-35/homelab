@@ -5,6 +5,7 @@ package main
 import (
 	"log"
 	"os"
+	"time"
 
 	"code.gitea.io/sdk/gitea"
 	"gopkg.in/yaml.v2"
@@ -30,6 +31,7 @@ type Config struct {
 	Repositories  []Repository
 }
 
+
 func main() {
 	data, err := os.ReadFile("./config.yaml")
 
@@ -50,10 +52,14 @@ func main() {
 	gitea_password := os.Getenv("GITEA_PASSWORD")
 
 	options := (gitea.SetBasicAuth(gitea_user, gitea_password))
-	client, err := gitea.NewClient(gitea_host, options)
 
-	if err != nil {
-		log.Fatal(err)
+	var client *gitea.Client
+	for ok := true; ok; ok = err == nil { 
+		client, err = gitea.NewClient(gitea_host, options)
+		if err != nil {
+			log.Println("Waiting for gitea server ...")
+			time.Sleep(60 * time.Second)
+		}
 	}
 
 	for _, org := range config.Organizations {

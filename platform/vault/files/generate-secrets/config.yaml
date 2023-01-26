@@ -5,11 +5,9 @@
       length: 32
       special: true
 
+# Gitea
 - path: gitea/dex
   data:
-    - key: client_id
-      length: 32
-      special: false
     - key: client_secret
       length: 32
       special: true

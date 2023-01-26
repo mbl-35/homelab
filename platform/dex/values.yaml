@@ -12,7 +12,7 @@ dex:
         id: gitea
         name: Gitea
         config:
-          clientID: $GITEA_CLIENT_ID
+          clientID: gitea-dex-client-id
           clientSecret: $GITEA_CLIENT_SECRET
           redirectURI: https://dex.kube.localhost/callback
           baseURL: https://git.kube.localhost

@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"time"
 
 	vault "github.com/hashicorp/vault/api"
 	"github.com/sethvargo/go-password/password"
@@ -23,6 +22,8 @@ type RandomPassword struct {
 }
 
 func main() {
+
+	log.Println("generate-secrets starts")
 	data, err := os.ReadFile("./config.yaml")
 
 	if err != nil {
@@ -37,21 +38,21 @@ func main() {
 	}
 	config := vault.DefaultConfig()
 
-	var client *vault.Client
-	for ok := true; ok; ok = err == nil {
-		client, err = vault.NewClient(config)
-		if err != nil {
-			log.Println("Waiting for vault server ...")
-			time.Sleep(60 * time.Second)
-		}
+	client, err := vault.NewClient(config)
+	if err != nil {
+		log.Fatalf("unable to initialize Vault client: %v", err)
 	}
 
-	for _, randomPassword := range randomPasswords {
-		path := fmt.Sprintf("/secret/data/%s", randomPassword.Path)
+	log.Println("Vault client initialized")
 
+	for _, randomPassword := range randomPasswords {
+
+		path := fmt.Sprintf("/secret/data/%s", randomPassword.Path)
 		secret, _ := client.Logical().Read(path)
 
 		if secret == nil {
+
+			log.Printf("generate-secrets for %s\n", path)
 			secretData := map[string]interface{}{
 				"data": map[string]interface{}{},
 			}
@@ -72,8 +73,10 @@ func main() {
 			} else {
 				log.Println("Secret written successfully.")
 			}
+
 		} else {
-			log.Println("Key abc in secret already existed.")
+			log.Printf("Key %s in secret already existed.", path)
 		}
 	}
+	log.Println("Access Granted")
 }

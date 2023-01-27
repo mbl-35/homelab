@@ -37,10 +37,6 @@ func main() {
 	}
 	config := vault.DefaultConfig()
 
-	//client, err := vault.NewClient(config)
-	//if err != nil {
-	//		log.Fatalf("unable to initialize Vault client: %v", err)
-	//}
 	var client *vault.Client
 	for ok := true; ok; ok = err == nil {
 		client, err = vault.NewClient(config)

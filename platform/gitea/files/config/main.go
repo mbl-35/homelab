@@ -5,7 +5,6 @@ package main
 import (
 	"log"
 	"os"
-	"time"
 
 	"code.gitea.io/sdk/gitea"
 	"gopkg.in/yaml.v2"
@@ -33,16 +32,15 @@ type Config struct {
 
 
 func main() {
-	data, err := os.ReadFile("./config.yaml")
+	log.Println("generate-secrets starts")
 
+	data, err := os.ReadFile("./config.yaml")
 	if err != nil {
 		log.Fatalf("Unable to read config file: %v", err)
 	}
 
 	config := Config{}
-
 	err = yaml.Unmarshal([]byte(data), &config)
-
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}
@@ -52,15 +50,12 @@ func main() {
 	gitea_password := os.Getenv("GITEA_PASSWORD")
 
 	options := (gitea.SetBasicAuth(gitea_user, gitea_password))
-
-	var client *gitea.Client
-	for ok := true; ok; ok = err == nil { 
-		client, err = gitea.NewClient(gitea_host, options)
-		if err != nil {
-			log.Println("Waiting for gitea server ...")
-			time.Sleep(60 * time.Second)
-		}
+	client, err := gitea.NewClient(gitea_host, options)
+	if err != nil {
+		log.Fatal(err)
 	}
+
+	log.Println("Gitea client initialized")
 
 	for _, org := range config.Organizations {
 		_, _, err = client.CreateOrg(gitea.CreateOrgOption{
@@ -75,6 +70,7 @@ func main() {
 
 	for _, repo := range config.Repositories {
 		if repo.Migrate.Source != "" {
+			log.Printf("gitea-migrate-repo %s\n", repo.Name)
 			_, _, err = client.MigrateRepo(gitea.MigrateRepoOption{
 				RepoName:       repo.Name,
 				RepoOwner:      repo.Owner,
@@ -96,4 +92,5 @@ func main() {
 			})
 		}
 	}
+	log.Println("Gitea Repo Initialized")
 }

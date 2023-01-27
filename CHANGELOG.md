@@ -23,7 +23,7 @@
 [X] Report fix(argocd): do not apply ServiceMonitor on bootstrap (https://github.com/mbl-35/homelab/commit/cd39632439e0d57a1a0fcbed5cc7d80845e2498f)
 [X] Allow docker configuration on nixos (.docker.json)
 [ ] Integrate /scripts/hacks
-[ ] Change generate-secret cronjob to job with readinessProbe
+[X] Change generate-secret cronjob to job with readinessProbe
 
 ## Initial diffs khuedoan/homelab branch prod vs dev
 - kube.localhost => 127-0-0-1.nip.io

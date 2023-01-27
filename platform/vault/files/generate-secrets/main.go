@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	vault "github.com/hashicorp/vault/api"
 	"github.com/sethvargo/go-password/password"
@@ -36,9 +37,17 @@ func main() {
 	}
 	config := vault.DefaultConfig()
 
-	client, err := vault.NewClient(config)
-	if err != nil {
-		log.Fatalf("unable to initialize Vault client: %v", err)
+	//client, err := vault.NewClient(config)
+	//if err != nil {
+	//		log.Fatalf("unable to initialize Vault client: %v", err)
+	//}
+	var client *vault.Client
+	for ok := true; ok; ok = err == nil {
+		client, err = vault.NewClient(config)
+		if err != nil {
+			log.Println("Waiting for vault server ...")
+			time.Sleep(60 * time.Second)
+		}
 	}
 
 	for _, randomPassword := range randomPasswords {
